@@ -28,7 +28,7 @@ def defining_optimizer(x):
 
 
 def randomize_optimizer():
-    optim_rand = random.randint(1,10)
+    optim_rand = random.randint(1,9)
     l_rate = random.uniform(0.0001, 0.01)
     if (optim_rand == 1):
         optimizer = optimizers.SGD(learning_rate=l_rate)
@@ -52,12 +52,9 @@ def randomize_optimizer():
         optimizer = optimizers.Adamax(learning_rate=l_rate)
         name = optimizers.Adamax.__name__
     elif (optim_rand == 8):
-        optimizer = optimizers.Adafactor(learning_rate=l_rate)
-        name = optimizers.Adafactor.__name__
-    elif (optim_rand == 9):
         optimizer = optimizers.Nadam(learning_rate=l_rate)
         name = optimizers.Nadam.__name__
-    elif (optim_rand == 10):
+    elif (optim_rand == 9):
         optimizer = optimizers.Ftrl(learning_rate=l_rate)
         name = optimizers.Ftrl.__name__
     return optimizer, l_rate, name
