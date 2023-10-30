@@ -27,34 +27,32 @@ def defining_optimizer(x):
     return optimizer, l_rate
 
 
-def randomize_optimizer():
-    optim_rand = random.randint(1,9)
-    l_rate = random.uniform(0.0001, 0.01)
-    if (optim_rand == 1):
+def randomize_optimizer(optimizer_number,l_rate):
+    if (optimizer_number == 1):
         optimizer = optimizers.SGD(learning_rate=l_rate)
         name = optimizers.SGD.__name__
-    elif (optim_rand == 2):
+    elif (optimizer_number == 2):
         optimizer = optimizers.RMSprop(learning_rate=l_rate)
         name = optimizers.RMSprop.__name__
-    elif (optim_rand == 3):
+    elif (optimizer_number == 3):
         optimizer = optimizers.Adam(learning_rate=l_rate)
         name = optimizers.Adam.__name__
-    elif (optim_rand == 4):
+    elif (optimizer_number == 4):
         optimizer = optimizers.AdamW(learning_rate=l_rate)
         name = optimizers.AdamW.__name__
-    elif (optim_rand == 5):
+    elif (optimizer_number == 5):
         optimizer = optimizers.Adadelta(learning_rate=l_rate)
         name = optimizers.Adadelta.__name__
-    elif (optim_rand == 6):
+    elif (optimizer_number == 6):
         optimizer = optimizers.Adagrad(learning_rate=l_rate)
         name = optimizers.Adagrad.__name__
-    elif (optim_rand == 7):
+    elif (optimizer_number == 7):
         optimizer = optimizers.Adamax(learning_rate=l_rate)
         name = optimizers.Adamax.__name__
-    elif (optim_rand == 8):
+    elif (optimizer_number == 8):
         optimizer = optimizers.Nadam(learning_rate=l_rate)
         name = optimizers.Nadam.__name__
-    elif (optim_rand == 9):
+    elif (optimizer_number == 9):
         optimizer = optimizers.Ftrl(learning_rate=l_rate)
         name = optimizers.Ftrl.__name__
-    return optimizer, l_rate, name
+    return optimizer, name

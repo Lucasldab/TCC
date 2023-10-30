@@ -1,13 +1,25 @@
 from skopt.sampler import Lhs
+from skopt.sampler import Grid
 import numpy as np
 from skopt.space import Space
+from scipy.spatial.distance import pdist
 
-def sampling_space(n_samples,minLim,maxLim):
-    n_samples = n_samples
+def lhs_sampling(n_samples,minLim,maxLim,round=True):
     space = Space([(minLim, maxLim)])
+    lhs = Lhs(lhs_type='classic', criterion=None)
+    samplings = lhs.generate(space.dimensions, n_samples)
+    if (round==False):
+        samplings = np.array(samplings).flatten()
+    else:
+        samplings = np.array(samplings).flatten().astype(int)
+    return samplings
 
-
-
-
-lhs = Lhs(lhs_type='classic', criterion=None)
-x = lhs.generate(space.dimenensions, n_samples)
+def grid_sampling(n_samples,minLim,maxLim,round=True):
+    space = Space([(minLim, maxLim)])
+    grid = Grid(border="include", use_full_layout=False)
+    samplings = grid.generate(space.dimensions, n_samples)
+    if (round==False):
+        samplings = np.array(samplings).flatten()
+    else:
+        samplings = np.array(samplings).flatten().astype(int)
+    return samplings
