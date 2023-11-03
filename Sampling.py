@@ -23,3 +23,12 @@ def grid_sampling(n_samples,minLim,maxLim,round=True):
     else:
         samplings = np.array(samplings).flatten().astype(int)
     return samplings
+
+def random_sampling(n_samples,minLim,maxLim,round=True):
+    space = Space([(minLim, maxLim)])
+    samplings = space.rvs(n_samples)
+    if (round==False):
+        samplings = np.array(samplings).flatten()
+    else:
+        samplings = np.array(samplings).flatten().astype(int)
+    return samplings
