@@ -2,7 +2,6 @@ import random
 import csv
 import os
 import tensorflow as tf
-from tensorflow import keras
 from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras import layers
@@ -14,8 +13,8 @@ import Sampling
 trains = int(input("CNN numbers: "))
 
 # Create a CSV file if it doesn't exist to store the results
-if not os.path.exists('data/CNN_LHS_9Hyper.csv'):
-    with open('data/CNN_LHS_9Hyper.csv', 'w', newline='') as file:
+if not os.path.exists('trainings/CNN_LHS_9Hyper.csv'):
+    with open('trainings/CNN_LHS_9Hyper.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Name", "Convoluted_Layers1", "Convoluted_Filters1", "Convoluted_Layers2", "Convoluted_Filters2", "Hidden_Layer1", "Hidden_Layer2", "Learning_Rate", "Batch_Size", "Loss"])
         file.close()
@@ -74,7 +73,7 @@ for training in range(0, trains, 1):
     # Print and save model and training information
     print("Optimizer: {} Convoluted Layers 1: {} Convoluted Filters 1: {} Convoluted Layers 2: {} Convoluted Filters 2: {} Hidden Layer 1: {} Hidden Layer 2: {} Learning Rate: {} Batch Size: {} Loss: {}".format(name, conv_n1[training], conv_f1[training], conv_n2[training], conv_f2[training], L1[training], L2[training], l_rate[training], bt_size[training], final_loss))
     
-    with open('data/CNN_LHS_9Hyper.csv', 'a', newline='') as file:
+    with open('trainings/CNN_LHS_9Hyper.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([name, conv_n1[training], conv_f1[training], conv_n2[training], conv_f2[training], L1[training], L2[training], l_rate[training], bt_size[training], final_loss])
         file.close()

@@ -2,11 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-def damavandi(x):
-    exponent = 5 * np.sin((x**2) / np.pi)
-    exponent = np.where(exponent >= 0, exponent, 0)
-    return np.sin(x) * (np.sin((x**2) / np.pi))**exponent
-
 class Particle:
     def __init__(self, bounds):
         self.position = np.random.uniform(bounds[:, 0], bounds[:, 1])

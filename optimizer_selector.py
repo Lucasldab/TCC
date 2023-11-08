@@ -56,3 +56,33 @@ def randomize_optimizer(optimizer_number,l_rate):
         optimizer = optimizers.Ftrl(learning_rate=l_rate)
         name = optimizers.Ftrl.__name__
     return optimizer, name
+
+def defining_optimizer_byName(optimizer,l_rate):
+    if (optimizer == 'SGD'):
+        optimizer = optimizers.SGD(learning_rate=l_rate)
+        name = optimizers.SGD.__name__
+    elif (optimizer == 'RMSprop'):
+        optimizer = optimizers.RMSprop(learning_rate=l_rate)
+        name = optimizers.RMSprop.__name__
+    elif (optimizer == 'Adam'):
+        optimizer = optimizers.Adam(learning_rate=l_rate)
+        name = optimizers.Adam.__name__
+    elif (optimizer == 'AdamW'):
+        optimizer = optimizers.AdamW(learning_rate=l_rate)
+        name = optimizers.AdamW.__name__
+    elif (optimizer == 'Adadelta'):
+        optimizer = optimizers.Adadelta(learning_rate=l_rate)
+        name = optimizers.Adadelta.__name__
+    elif (optimizer == 'Adagrad'):
+        optimizer = optimizers.Adagrad(learning_rate=l_rate)
+        name = optimizers.Adagrad.__name__
+    elif (optimizer == 'Adamax'):
+        optimizer = optimizers.Adamax(learning_rate=l_rate)
+        name = optimizers.Adamax.__name__
+    elif (optimizer == 'Nadam'):
+        optimizer = optimizers.Nadam(learning_rate=l_rate)
+        name = optimizers.Nadam.__name__
+    elif (optimizer == 'Ftrl'):
+        optimizer = optimizers.Ftrl(learning_rate=l_rate)
+        name = optimizers.Ftrl.__name__
+    return optimizer, name
