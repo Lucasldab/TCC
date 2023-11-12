@@ -1,83 +1,35 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
-class Particle:
-    def __init__(self, bounds):
-        self.position = np.random.uniform(bounds[:, 0], bounds[:, 1])
-        self.velocity = np.random.uniform(0, 1, size=(bounds.shape[0],))
-        self.best_position = np.copy(self.position)
-        self.best_score = damavandi(self.position)
 
-class PSO:
-    def __init__(self, n_particles, bounds, iterations, c1=2.05, c2=2.05):
-        self.n_particles = n_particles
-        self.bounds = bounds
-        self.iterations = iterations
-        self.c1 = c1
-        self.c2 = c2
-        self.particles = [Particle(bounds) for _ in range(n_particles)]
-        self.gbest_score = np.inf
-        self.gbest_position = np.zeros(bounds.shape[0])
-        self.w = np.linspace(0.9, 0.1, self.iterations)
-        self.best_scores = []
-        self.positions_over_time = []
+def pso_with_fitness(fitness_values, particles_position, inertia_weight, cognitive_coeff, social_coeff):
+    num_particles, num_dimensions = particles_position.shape
 
-    def optimize(self):
-        for i in range(self.iterations):
-            positions = []
-            for particle in self.particles:
-                fitness = damavandi(particle.position)
+    # Initialize personal best
+    personal_best_position = particles_position.copy()
+    personal_best_value = fitness_values.copy()
 
-                if fitness < particle.best_score:
-                    particle.best_score = fitness
-                    particle.best_position = np.copy(particle.position)
+    # Initialize global best
+    global_best_index = np.argmin(fitness_values)
+    global_best_position = particles_position[global_best_index]
+    global_best_value = fitness_values[global_best_index]
 
-                if fitness < self.gbest_score:
-                    self.gbest_score = fitness
-                    self.gbest_position = np.copy(particle.position)
+    # Main PSO loop
+    for i in range(num_particles):
+        # Update personal best
+        if fitness_values[i] < personal_best_value[i]:
+            personal_best_value[i] = fitness_values[i]
+            personal_best_position[i] = particles_position[i]
 
-                r1 = np.random.random()
-                r2 = np.random.random()
+        # Update global best
+        if fitness_values[i] < global_best_value:
+            global_best_value = fitness_values[i]
+            global_best_position = particles_position[i]
 
-                cognitive = self.c1 * r1 * (particle.best_position - particle.position)
-                social = self.c2 * r2 * (self.gbest_position - particle.position)
+        # Update particle position
+        inertia_term = inertia_weight * np.random.rand() * (personal_best_position[i] - particles_position[i])
+        cognitive_term = cognitive_coeff #* np.random.rand() * (personal_best_position[i] - particles_position[i])
+        social_term = social_coeff #* np.random.rand() * (global_best_position - particles_position[i])
 
-                particle.velocity = self.w[i] * particle.velocity + cognitive + social
-                particle.position += particle.velocity
+        particles_position[i] = particles_position[i] + inertia_term + cognitive_term + social_term
 
-                particle.position = np.clip(particle.position, self.bounds[:, 0], self.bounds[:, 1])
-                positions.append(particle.position)
-
-            self.positions_over_time.append(positions)
-            self.best_scores.append(self.gbest_score)
-
-        return self.gbest_position, self.gbest_score
-
-    def animate(self):
-        fig, ax = plt.subplots()
-
-        dim1, dim2 = np.random.choice(range(self.bounds.shape[0]), size=2, replace=False)
-
-        def update(num):
-            ax.clear()
-            ax.set_title('Iteration ' + str(num))
-            ax.set_xlim([self.bounds[dim1, 0], self.bounds[dim1, 1]])
-            ax.set_ylim([self.bounds[dim2, 0], self.bounds[dim2, 1]])
-            positions = self.positions_over_time[num]
-            for position in positions:
-                ax.scatter(position[dim1], position[dim2])
-
-        ani = animation.FuncAnimation(fig, update, frames=self.iterations, repeat=False)
-        writervideo = animation.FFMpegWriter(fps=2)
-        ani.save('./pso.mp4', writer=writervideo)
-        plt.show()
-
-def main():
-    bounds = np.array([[-5.12, 5.12], [-5.12, 5.12], [-5.12, 5.12]])
-    pso = PSO(n_particles=30, bounds=bounds, iterations=100)
-    best_position, best_score = pso.optimize()
-    print(f"Best position: {best_position}, Best score: {best_score}")
-    pso.animate()
-
-main()
+    return global_best_position, global_best_value,particles_position
