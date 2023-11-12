@@ -10,7 +10,7 @@ from keras import models
 import optimizer_selector
 
 trains = 1000
-samplingMethod = 'LHS'
+samplingMethod = 'grid'
 
 
 for datasetNumber in range(1,21):
