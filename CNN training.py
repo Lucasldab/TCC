@@ -9,15 +9,9 @@ from keras import layers
 from keras import models
 import optimizer_selector
 
-
-#start = 1#int(input("Which row it starts: "))
-trains = 1000#int(input("CNN numbers: "))
-#datasetNumber = 1
+trains = 1000
 samplingMethod = 'LHS'
 
-
-#print(start)
-#print(trains)
 
 for datasetNumber in range(1,21):
 

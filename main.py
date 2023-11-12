@@ -3,6 +3,7 @@ import GaussianRegression
 import pandas as pd
 import SurrogateFunction
 import ParticleSwarmOptimization
+import numpy as np
 
 #Data treatment
 #data = pd.read_csv('trainings/training_CNN_results_v3.csv')

@@ -9,7 +9,7 @@ def gaussianProcess(data_only,loss_data,other_half_data,smallest_loss_local):
     gp.fit(data_only, loss_data)
 
     surrogate_values = []
-
+    
     for X in range (len(other_half_data)):
         y_mean, y_cov = gp.predict(other_half_data[X:X+1,:-1], return_cov=True)
         dist = norm(loc=0.0,scale=1.0)

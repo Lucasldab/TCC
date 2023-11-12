@@ -1,7 +1,8 @@
 from scipy.stats import norm
 import numpy as np
 
-def expected_improvement(y_mean,y_cov,loss_data,smallest_loss_local,other_half_data):
+def expected_improvement(loss_data,smallest_loss_local,other_half_data):
+    surrogate_values = []
 
     for X in range (len(other_half_data)):
         y_mean, y_cov = gp.predict(other_half_data[X:X+1,:-1], return_cov=True)
@@ -10,4 +11,4 @@ def expected_improvement(y_mean,y_cov,loss_data,smallest_loss_local,other_half_d
         u = (loss_data[smallest_loss_local] - y_mean[0])/sigma_tilde
         ei = sigma_tilde*((u * dist.cdf(u))+dist.pdf(u))
         surrogate_values.append(-ei)
-    return surrogate_values
+    return np.array(surrogate_values)
