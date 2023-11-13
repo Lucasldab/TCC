@@ -10,10 +10,10 @@ from keras import models
 import optimizer_selector
 
 trains = 1000
-samplingMethod = 'grid'
+samplingMethod = 'random'
+#startingDataset = 5
 
-
-for datasetNumber in range(1,21):
+for datasetNumber in range(15,21):
 
     datasetLocal = 'data/'+ samplingMethod +'/CNN_'+ samplingMethod +'_Hyperparameters_'+ str(datasetNumber) +'.csv'
     trainingFile = 'trainings/CNN_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'
@@ -30,7 +30,8 @@ for datasetNumber in range(1,21):
 
     with open(trainingFile, 'r', newline='') as file:
         csv_reader = csv.reader(file)
-        start = sum(1 for row in csv_reader)
+        line = sum(1 for row in csv_reader)
+        file.close()
 
     data = pd.read_csv(datasetLocal)
 
@@ -46,7 +47,7 @@ for datasetNumber in range(1,21):
     bt_size = data["Batch_Size"].values
 
     # Loop over the specified number of training runs
-    for training in range(start-1, trains, 1):
+    for training in range(line-1, trains, 1):
         print("Training: ", training+1)
         print("Dataset: ", samplingMethod + ' ' + str(datasetNumber))
 
