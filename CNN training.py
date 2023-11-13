@@ -10,10 +10,10 @@ from keras import models
 import optimizer_selector
 
 trains = 1000
-samplingMethod = 'random'
-#startingDataset = 5
+samplingMethod = input("Whitch sampling method?")
+startingDataset = int(input("Whitch sampling number?"))
 
-for datasetNumber in range(15,21):
+for datasetNumber in range(startingDataset,21):
 
     datasetLocal = 'data/'+ samplingMethod +'/CNN_'+ samplingMethod +'_Hyperparameters_'+ str(datasetNumber) +'.csv'
     trainingFile = 'trainings/CNN_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'
