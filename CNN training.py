@@ -1,3 +1,4 @@
+#& C:/Users/Lucas/anaconda3/envs/tcc/python.exe "d:/Projetos/PesquisaArtigo/TCC_Hyperparameters Optimization/CNN training.py"
 import random
 import csv
 import os
