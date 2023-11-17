@@ -32,4 +32,4 @@ def pso_with_fitness(fitness_values, particles_position, inertia_weight, cogniti
 
         particles_position[i] = particles_position[i] + inertia_term + cognitive_term + social_term
 
-    return global_best_position, global_best_value,particles_position
+    return global_best_position, global_best_value,particles_position,inertia_term

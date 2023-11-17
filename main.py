@@ -29,7 +29,7 @@ social_coeff = 1.5
 
 # Run PSO algorithm with fitness values
 for iterations in range(max_iterations):
-    best_position, best_value, end_particles_position = ParticleSwarmOptimization.pso_with_fitness(fitness_values, particles_position, inertia_weight, cognitive_coeff, social_coeff)
+    best_position, best_value, end_particles_position,inertia_weight = ParticleSwarmOptimization.pso_with_fitness(fitness_values, particles_position, inertia_weight, cognitive_coeff, social_coeff)
     surrogate_values = GaussianRegression.gaussianPSO(best_value,end_particles_position)
     print(iterations+1)
 

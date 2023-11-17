@@ -8,7 +8,7 @@ from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras import layers
 from keras import models
-import optimizer_selector
+import optimizerSelector
 
 trains = 1000
 samplingMethod = input("Whitch sampling method?")
@@ -77,7 +77,7 @@ for datasetNumber in range(startingDataset,21):
         model.add(layers.Dense(10, activation='softmax'))
 
         # Compile the model with a random optimizer
-        optimizer, name = optimizer_selector.defining_optimizer_byName(optimizer_name[training], l_rate[training])
+        optimizer, name = optimizerSelector.defining_optimizer_byName(optimizer_name[training], l_rate[training])
         model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
         epoc = 5
 
