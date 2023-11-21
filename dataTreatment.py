@@ -13,7 +13,7 @@ def clean_data(data):
     clean_data["Name"] = clean_data["Name"].replace(['Nadam'],0.8)
     clean_data["Name"] = clean_data["Name"].replace(['Ftrl'],0.9)
 
-    clean_data.to_csv('trainings/training_CNN_results_v3-1.csv', index=False)
+    #clean_data.to_csv('trainings/training_CNN_results_v3-1.csv', index=False)
     clean_data.astype('float32')
     return clean_data
 

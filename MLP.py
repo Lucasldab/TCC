@@ -7,10 +7,10 @@ import os
 import optimizerSelector
 
 trains = 1000
-samplingMethod = input("Whitch sampling method?")#random,LHS,grid
+samplingMethod = input("Whitch sampling method?")#'random','LHS','grid'
 startingDataset = int(input("Whitch sampling number?"))#1 to 20
 
-for datasetNumber in range(startingDataset,21):
+for datasetNumber in range(startingDataset,1,-1):
 
     datasetLocal = 'data/'+ samplingMethod +'/CNN_'+ samplingMethod +'_Hyperparameters_'+ str(datasetNumber) +'.csv'
     trainingFile = 'trainings/Fully_Connected_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'
@@ -60,10 +60,10 @@ for datasetNumber in range(startingDataset,21):
           model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
      
           epoc=5
-          history = model.fit(x_train, y_train, epochs=epoc, batch_size = bt_size[training] )
+          history = model.fit(x_train, y_train, epochs=epoc, batch_size = bt_size[training]  )
 
           history_dict = history.history
-          print("Optmizer:", name,"Hidden Layer 1:", L1,"Hidden Layer 2:", L2,"Learning Rate:", l_rate, "Batch Size:", bt_size, "Loss:", history_dict['loss'][epoc-1])
+          print("Optmizer:", name,"Hidden Layer 1:", L1[training],"Hidden Layer 2:", L2[training],"Learning Rate:", l_rate[training], "Batch Size:", bt_size[training], "Loss:", history_dict['loss'][epoc-1])
 
      
           with open(trainingFile, 'a', newline='') as file:
