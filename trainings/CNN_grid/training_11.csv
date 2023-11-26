@@ -1,1 +1,4 @@
 Name,Convoluted_Layers1,Convoluted_Filters1,Convoluted_Layers2,Convoluted_Filters2,Hidden_Layer1,Hidden_Layer2,Learning_Rate,Batch_Size,Loss
+Adadelta,23,2,22,2,52,17,0.0015696755683072,42,2.1910507678985596
+AdamW,21,2,24,1,60,18,0.0018145883910836,60,0.04711226001381874
+AdamW,19,2,28,1,46,24,0.0013066872655043,127,0.06837067753076553
