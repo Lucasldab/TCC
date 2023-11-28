@@ -86,3 +86,24 @@ def defining_optimizer_byName(optimizer,l_rate):
         optimizer = optimizers.Ftrl(learning_rate=l_rate)
         name = optimizers.Ftrl.__name__
     return optimizer, name
+
+def numberToName(optimizer):
+    if (optimizer == 0):
+        optimizer = 'SGD'
+    elif (optimizer == 1):
+        optimizer = 'RMSprop'
+    elif (optimizer == 2):
+        optimizer = 'Adam'
+    elif (optimizer == 3):
+        optimizer = 'AdamW'
+    elif (optimizer == 4):
+        optimizer = 'Adadelta'
+    elif (optimizer == 5):
+        optimizer = 'Adagrad'
+    elif (optimizer == 6):
+        optimizer = 'Adamax'
+    elif (optimizer == 7):
+        optimizer = 'Nadam'
+    elif (optimizer == 8):
+        optimizer = 'Ftrl'
+    return optimizer

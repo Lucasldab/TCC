@@ -10,9 +10,10 @@ import csv
 #best_position = []
 #best_value []
 
+num_particles = 100
 samplingMethod = 'LHS'
 samplesNumber = 20
-trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO.csv'
+trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO_'+str(num_particles)+'particles.csv'
 
 if not os.path.exists(trainingFile):
     with open(trainingFile, 'w', newline='') as file:
@@ -30,8 +31,6 @@ for training in range(1, samplesNumber+1):
     clean_data = dataTreatment.clean_data(data)
     half_data,other_half_data = dataTreatment.divide_samplings(clean_data)
     loss_data,data_only,smallest_loss_local = dataTreatment.data_from_loss(half_data)
-
-    num_particles = 100
 
     #Gaussian Process and Acquisition Function
     print('Gaussian Regression Interpolation')

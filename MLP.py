@@ -10,7 +10,7 @@ trains = 1000
 samplingMethod = input("Whitch sampling method?")#'random','LHS','grid'
 startingDataset = int(input("Whitch sampling number?"))#1 to 20
 
-for datasetNumber in range(startingDataset,1,-1):
+for datasetNumber in range(startingDataset,21):
 
     datasetLocal = 'data/'+ samplingMethod +'/CNN_'+ samplingMethod +'_Hyperparameters_'+ str(datasetNumber) +'.csv'
     trainingFile = 'trainings/Fully_Connected_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'
