@@ -95,3 +95,5 @@ for datasetNumber in range(startingDataset,21):
             writer = csv.writer(file)
             writer.writerow([name, conv_n1[training], conv_f1[training], conv_n2[training], conv_f2[training], L1[training], L2[training], l_rate[training], bt_size[training], final_loss])
             file.close()
+
+        tf.keras.backend.clear_session()

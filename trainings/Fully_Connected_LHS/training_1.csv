@@ -1,4 +1,4 @@
-Optimizer,Hidden_Layer1,Hidden_Layer2,Learning_Rate,Batch_Size,Loss
+Name,Hidden_Layer1,Hidden_Layer2,Learning_Rate,Batch_Size,Loss
 Adagrad,49,29,0.0090082306428653,70,0.2893430292606354
 Nadam,42,26,0.0021835324080241,32,0.07404094934463501
 Adadelta,63,28,0.0052704435011935,110,1.8430798053741455

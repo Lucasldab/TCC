@@ -3,15 +3,15 @@ import numpy as np
 def clean_data(data):
     clean_data = data[data["Name"] != 'Adafactor']
 
-    clean_data["Name"] = clean_data["Name"].replace(['SGD'],0.1)
-    clean_data["Name"] = clean_data["Name"].replace(['Adam'],0.3)
-    clean_data["Name"] = clean_data["Name"].replace(['RMSprop'],0.2)
-    clean_data["Name"] = clean_data["Name"].replace(['AdamW'],0.4)
-    clean_data["Name"] = clean_data["Name"].replace(['Adadelta'],0.5)
-    clean_data["Name"] = clean_data["Name"].replace(['Adagrad'],0.6)
-    clean_data["Name"] = clean_data["Name"].replace(['Adamax'],0.7)
-    clean_data["Name"] = clean_data["Name"].replace(['Nadam'],0.8)
-    clean_data["Name"] = clean_data["Name"].replace(['Ftrl'],0.9)
+    clean_data["Name"] = clean_data["Name"].replace(['SGD'],1.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Adam'],2.0)
+    clean_data["Name"] = clean_data["Name"].replace(['RMSprop'],3.0)
+    clean_data["Name"] = clean_data["Name"].replace(['AdamW'],4.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Adadelta'],5.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Adagrad'],6.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Adamax'],7.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Nadam'],8.0)
+    clean_data["Name"] = clean_data["Name"].replace(['Ftrl'],9.0)
 
     #clean_data.to_csv('trainings/training_CNN_results_v3-1.csv', index=False)
     clean_data.astype('float32')
@@ -35,3 +35,24 @@ def data_from_loss(half_data):
     data_only = np.asarray(half_data)
 
     return loss_data,data_only,smallest_loss_local
+
+def decimalToName(optimizer):
+    if (optimizer == 1):
+        optimizer = 'SGD'
+    elif (optimizer == 2):
+        optimizer = 'RMSprop'
+    elif (optimizer == 3):
+        optimizer = 'Adam'
+    elif (optimizer == 4):
+        optimizer = 'AdamW'
+    elif (optimizer == 5):
+        optimizer = 'Adadelta'
+    elif (optimizer == 6):
+        optimizer = 'Adagrad'
+    elif (optimizer == 7):
+        optimizer = 'Adamax'
+    elif (optimizer == 8):
+        optimizer = 'Nadam'
+    elif (optimizer == 9):
+        optimizer = 'Ftrl'
+    return optimizer

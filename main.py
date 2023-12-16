@@ -39,20 +39,25 @@ for training in range(1, samplesNumber+1):
     fitness_values = surrogate_values[:num_particles]
     particles_position = other_half_data[:num_particles,:-1]
 
+    print(particles_position)
+    break
+
+
     print("Surrogate Values acquired")
     #print(fitness_values)
     # Example usage
-    max_iterations = 2
-    inertia_weight = 0.02
-    cognitive_coeff = 0.5
-    social_coeff = 0.5
+    max_iterations = 50
+    #inertia_weight = 0.4
+    #cognitive_coeff = 0.5
+    #social_coeff = 0.5
 
     # Run PSO algorithm with fitness values
     print("Starting PSO with Gaussian Regression")
     for iterations in range(max_iterations):
-        best_position, best_value, end_particles_position,inertia_weight = particleSwarmOptimization.pso_with_fitness(fitness_values, particles_position, inertia_weight, cognitive_coeff, social_coeff)
+        best_position, best_value, end_particles_position,cognitive_coeff,social_coeff = particleSwarmOptimization.pso_with_fitness(fitness_values, particles_position,cognitive_coeff=cognitive_coeff,social_coeff=social_coeff)#, inertia_weight, cognitive_coeff, social_coeff)
         surrogate_values = gaussianRegression.gaussianPSO(best_value,end_particles_position)
-        print("Interation: ",iterations+1)
+        if (iterations + 1) % 10 == 0:
+            print(f"Processing iteration {iterations + 1}")
 
     print("Best Position without treatment:", best_position)
     print("Best Value:", best_value)
