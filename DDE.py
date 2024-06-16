@@ -49,6 +49,7 @@ class DiscreteDifferentialEvolution:
         population = self.population
         #fitness evaluation step
         y_mean, y_cov = self.gp.predict(population, return_cov=True)
+        y_cov = np.diag(y_cov)
         fitness = np.asarray([self.GaussianRegression.expectedImprovement(y_mean=ym,y_cov=yc,mn=self.mn) for ym,yc in zip(y_mean,y_cov)])
         best_idx = np.argmin(fitness)
         best_solution = population[best_idx]
@@ -73,6 +74,7 @@ class DiscreteDifferentialEvolution:
             #evaluation and substitution all at once
             temp_population = np.asarray(temp_population)
             y_mean_t, y_cov_t = self.gp.predict(temp_population, return_cov=True)
+            y_cov_t = np.diag(y_cov_t)
             fitness_t = np.asarray([self.GaussianRegression.expectedImprovement(y_mean=ym,y_cov=yc,mn=self.mn) for ym,yc in zip(y_mean_t,y_cov_t)])
             
             mask = fitness_t <= fitness
