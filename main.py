@@ -5,10 +5,8 @@ import ParticleSwarmOptimization
 import numpy as np
 import os
 import csv
-import DDE
+import DDE as DDE
 
-#best_position = []
-#best_value []
 
 num_particles = 100
 samplingMethod = 'LHS'
@@ -34,16 +32,17 @@ for training in range(1, samplesNumber+1):
 
     #Gaussian Process and Acquisition Function
     print('Gaussian Regression Interpolation')
-    surrogate_values = GaussianRegression.gaussianProcess(data_only,loss_data,other_half_data,smallest_loss_local)
+    gr = GaussianRegression.GaussianRegression(data_only = data_only,loss_data = loss_data,other_half_data = other_half_data,smallest_loss_local = smallest_loss_local)
+
+    surrogate_values = gr.gaussianProcess(data_only,loss_data,other_half_data,smallest_loss_local)
 
     fitness_values = surrogate_values[:num_particles]
     particles_position = other_half_data[:num_particles,:-1]
 
-    print(particles_position)
+    print("Discrete Differential Evolution Optimization:")
 
-    print("Surrogate Values acquired")
-
-    dde = DDE.DiscreteDifferentialEvolution(objective_function=fitness_values,
+    dde = DDE.DiscreteDifferentialEvolution(X=data_only,
+                                            y=loss_data,
                                             population_size=num_particles,
                                             population=particles_position,
                                             dimension=9,
