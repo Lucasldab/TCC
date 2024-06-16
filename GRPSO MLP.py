@@ -1,8 +1,7 @@
 import dataTreatment
-import gaussianRegression
+import GaussianRegression
 import pandas as pd
-import surrogateFunction
-import particleSwarmOptimization
+#import particleSwarmOptimization
 import numpy as np
 import random
 import os
@@ -68,7 +67,7 @@ class PSO_Generalized:
             # Aplica condições de fronteira
             self.apply_boundary_conditions()
 
-            self.fitness_function = gaussianRegression.gaussianPSO(self.global_best_fitness,self.positions)
+            self.fitness_function = GaussianRegression.GaussianRegression.gaussianProcess(self.global_best_fitness,self.positions)
 
         return self.global_best_position, self.global_best_fitness
 
