@@ -8,10 +8,10 @@ import csv
 import DDE as DDE
 
 
-num_particles = 100
+IndividualsNumber = 100
 samplingMethod = 'LHS'
 samplesNumber = 20
-trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO_'+str(num_particles)+'particles.csv'
+trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO_'+str(IndividualsNumber)+'particles.csv'
 
 if not os.path.exists(trainingFile):
     with open(trainingFile, 'w', newline='') as file:
@@ -30,20 +30,13 @@ for training in range(1, samplesNumber+1):
     half_data,other_half_data = dataTreatment.divide_samplings(clean_data)
     loss_data,data_only,smallest_loss_local = dataTreatment.data_from_loss(half_data)
 
-    #Gaussian Process and Acquisition Function
-    print('Gaussian Regression Interpolation')
-    gr = GaussianRegression.GaussianRegression(data_only = data_only,loss_data = loss_data,other_half_data = other_half_data,smallest_loss_local = smallest_loss_local)
-
-    surrogate_values = gr.gaussianProcess(data_only,loss_data,other_half_data,smallest_loss_local)
-
-    fitness_values = surrogate_values[:num_particles]
-    particles_position = other_half_data[:num_particles,:-1]
+    particles_position = other_half_data[:,:-1]
 
     print("Discrete Differential Evolution Optimization:")
 
     dde = DDE.DiscreteDifferentialEvolution(X=data_only,
                                             y=loss_data,
-                                            population_size=num_particles,
+                                            population_size=len(particles_position),
                                             population=particles_position,
                                             dimension=9,
                                             bounds=(0, 1000),
