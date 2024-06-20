@@ -27,7 +27,7 @@ def defining_optimizer(x):
     return optimizer, l_rate
 
 
-def randomize_optimizer(optimizer_number,l_rate):
+def randomizeOptimizer(optimizer_number,l_rate):
     if (optimizer_number == 1):
         optimizer = optimizers.SGD(learning_rate=l_rate)
         name = optimizers.SGD.__name__
@@ -57,7 +57,7 @@ def randomize_optimizer(optimizer_number,l_rate):
         name = optimizers.Ftrl.__name__
     return optimizer, name
 
-def defining_optimizer_byName(optimizer,l_rate):
+def defineOptimizer(optimizer,l_rate):
     if (optimizer == 'SGD'):
         optimizer = optimizers.SGD(learning_rate=l_rate)
         name = optimizers.SGD.__name__
