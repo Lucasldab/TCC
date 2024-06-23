@@ -13,7 +13,7 @@ import numpy as np
 import hyperopt
 import pandas as pd
 from hyperopt import fmin, tpe, hp, Trials, STATUS_OK
-
+import neuralNetwork
 
 def objective_function_CNN(params):
     # Extract hyperparameters from the 'params' dictionary
@@ -26,26 +26,13 @@ def objective_function_CNN(params):
     hidden_layer2 = int(params['Hidden_Layer2'])
     learning_rate = float(params['Learning_Rate'])
     batch_size = int(params['Batch_Size'])
-    
-     # Create a Sequential model
-    model = models.Sequential()
 
-    # Add convolutional layers
-    model.add(layers.Conv2D(int(conv_layers1), (int(conv_filters1)), activation='relu', input_shape=(28, 28, 1)))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(int(conv_layers2), (int(conv_filters2)), activation='relu'))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Flatten())
-
-    # Add fully connected layers
-    model.add(layers.Dense(hidden_layer1, activation='relu'))
-    model.add(layers.Dense(hidden_layer2, activation='relu'))
-    model.add(layers.Dense(10, activation='softmax'))
-
-    # Compile the model with a random optimizer
-    optimizer, name = optimizer_selector.defining_optimizer_byName(name, learning_rate)
-    model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
     epoc = 5
+    ConvolutedLayers = [conv_layers1,conv_layers2]
+    denseLayers = [hidden_layer1,hidden_layer2]
+    filterLayers = [conv_filters1,conv_filters2]
+    NN = neuralNetwork.NeuralNetwork(optimizer=name,learningRate=learning_rate[training])
+    model = NN.createCNNmodel(ConvolutedLayers=ConvolutedLayers,denseLayers=denseLayers,filterLayers=filterLayers)
 
     # Train the model
     history = model.fit(x_train, y_train, epochs=epoc, batch_size=batch_size)
@@ -78,7 +65,11 @@ spaceCNN = {
     'Batch_Size': hp.quniform('Batch_Size', 32, 128, 1),
 }
 
-for datasetNumber in range(startingDataset,21):
+trains = 100
+samplingMethod = 'TPE'
+totalOfDataset = 20
+
+for datasetNumber in totalOfDataset:
 
     folderName = 'trainings/CNN_'+ samplingMethod
     trainingFile = 'trainings/CNN_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'

@@ -13,7 +13,7 @@ import numpy as np
 import hyperopt
 import pandas as pd
 from hyperopt import fmin, tpe, hp, Trials, STATUS_OK
-
+import neuralNetwork
 
 def objective_function_MLP(params):
     # Extract hyperparameters from the 'params' dictionary
@@ -23,20 +23,10 @@ def objective_function_MLP(params):
     learning_rate = float(params['Learning_Rate'])
     batch_size = int(params['Batch_Size'])
     
-     # Create a Sequential model
-    model = models.Sequential()
-
-    model.add(layers.Flatten(input_shape=(28, 28)))
-
-    # Add fully connected layers
-    model.add(layers.Dense(hidden_layer1, activation='relu'))
-    model.add(layers.Dense(hidden_layer2, activation='relu'))
-    model.add(layers.Dense(10, activation='softmax'))
-
-    # Compile the model with a random optimizer
-    optimizer, name = optimizerSelector.defining_optimizer_byName(name, learning_rate)
-    model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
     epoc = 5
+    denseLayers = [hidden_layer1,hidden_layer2]
+    NN = neuralNetwork.NeuralNetwork(optimizer=name,learningRate=learning_rate)
+    model = NN.createMLPmodel(denseLayers=denseLayers)
 
     # Train the model
     history = model.fit(x_train, y_train, epochs=epoc, batch_size=batch_size)
@@ -67,10 +57,10 @@ spaceMLP = {
 
 trains = 100
 samplingMethod = 'TPE'
-startingDataset = int(input("Whitch sampling number?"))
+totalOfDataset = 20
 
-for datasetNumber in range(startingDataset,1,-1):
-    #startingDataset-=1
+for datasetNumber in totalOfDataset:
+
     trainingFile = 'trainings/Fully_Connected_'+ samplingMethod +'/training_'+ str(datasetNumber) +'.csv'
     
     print('Dataset: CNN_'+ samplingMethod +'_Hyperparameters_'+ str(datasetNumber) +'.csv')
