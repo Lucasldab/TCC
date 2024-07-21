@@ -25,7 +25,7 @@ for datasetNumber in range(startingDataset,20):
     if not os.path.exists(trainingFile):
         with open(trainingFile, 'w', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Optimizer","Learning_Rate","Batch_Size","Convoluted_Layers1","Convoluted_Layers2","Convoluted_Layers3","Convoluted_Layers4","Convoluted_Layers5","Convoluted_Layers6","Convoluted_Layers7","Convoluted_Layers8","Convoluted_Layers9","Convoluted_Layers10","Convoluted_Layers11","Convoluted_Layers12","Convoluted_Layers13","Dense_Layers1","Dense_Layers2","Filter_Layers1","Filter_Layers2","Filter_Layers3","Filter_Layers4","Filter_Layers5","Filter_Layers6","Filter_Layers7","Filter_Layers8","Filter_Layers9","Filter_Layers10","Filter_Layers11","Filter_Layers12","Filter_Layers13","Max_Pooling_Layers1","Max_Pooling_Layers2","Max_Pooling_Layers3","Max_Pooling_Layers4","Max_Pooling_Layers5"])
+            writer.writerow(["Optimizer","Learning_Rate","Batch_Size","Convoluted_Layers1","Convoluted_Layers2","Convoluted_Layers3","Convoluted_Layers4","Convoluted_Layers5","Convoluted_Layers6","Convoluted_Layers7","Convoluted_Layers8","Convoluted_Layers9","Convoluted_Layers10","Convoluted_Layers11","Convoluted_Layers12","Convoluted_Layers13","Dense_Layers1","Dense_Layers2","Filter_Layers1","Filter_Layers2","Filter_Layers3","Filter_Layers4","Filter_Layers5","Filter_Layers6","Filter_Layers7","Filter_Layers8","Filter_Layers9","Filter_Layers10","Filter_Layers11","Filter_Layers12","Filter_Layers13","Max_Pooling_Layers1","Max_Pooling_Layers2","Max_Pooling_Layers3","Max_Pooling_Layers4","Max_Pooling_Layers5,Loss"])
             file.close()
 
     data = pd.read_csv(datasetLocal)
@@ -122,7 +122,8 @@ for datasetNumber in range(startingDataset,20):
                              maxPoolingLayers[1],
                              maxPoolingLayers[2],
                              maxPoolingLayers[3],
-                             maxPoolingLayers[4]])
+                             maxPoolingLayers[4]],
+                             final_loss)
             file.close()
 
-    backend.clear_session()
+        backend.clear_session()
