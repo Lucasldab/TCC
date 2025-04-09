@@ -5,3 +5,6 @@ TCC Docs/978-94-007-0789-4_2.pdf
 *.png
 *.docx
 *.pdf
+test.py
+test.ipynb
+psotest.ipynb

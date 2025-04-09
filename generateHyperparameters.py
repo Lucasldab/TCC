@@ -1,47 +1,86 @@
-import random
-import csv
-import os
-import tensorflow as tf
-from keras.datasets import mnist
-from keras.utils import to_categorical
-from keras import layers
-from keras import models
-from optimizer_selector import randomize_optimizer
 import Sampling
 
-# Define the number of CNN models to train
-trains = 50000
-#trains2 = 50000
-dataSamples = 20
-for samples in range(0,dataSamples):
+class generateHyperparameters:
+    def __init__(self, trainQuantity,samplingMethod,learningRate = (0.0001, 0.01),batchSize = (32., 128.), optimizer = (1., 9.)):
+        self.sampleMethod = samplingMethod
+        self.trainQuantity = trainQuantity
 
-    csvName = 'data/sobol/CNN_Sobol_Hyperparameters_'+ str(samples+1) +'.csv'
+        if self.sampleMethod == 'grid':
+            self.optimizer = Sampling.grid_sampling(self.trainQuantity, *optimizer)
+            self.learningRate = Sampling.grid_sampling(self.trainQuantity, *learningRate,round=False)
+            self.batchSize = Sampling.grid_sampling(self.trainQuantity, *batchSize)
+        elif self.sampleMethod == 'LHS':
+            self.optimizer = Sampling.lhs_sampling(self.trainQuantity, *optimizer)
+            self.learningRate = Sampling.lhs_sampling(self.trainQuantity, *learningRate,round=False)
+            self.batchSize = Sampling.lhs_sampling(self.trainQuantity, *batchSize)
+        elif self.sampleMethod == 'random':
+            self.optimizer = Sampling.random_sampling(self.trainQuantity, *optimizer)
+            self.learningRate = Sampling.random_sampling(self.trainQuantity, *learningRate,round=False)
+            self.batchSize = Sampling.random_sampling(self.trainQuantity, *batchSize)
 
-    # Create a CSV file if it doesn't exist to store the results
-    if not os.path.exists(csvName):
-        with open(csvName, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(["Name", "Convoluted_Layers1", "Convoluted_Filters1", "Convoluted_Layers2", "Convoluted_Filters2", "Hidden_Layer1", "Hidden_Layer2", "Learning_Rate", "Batch_Size"])
-            file.close()
+    def generateFullyConnectedMLP(self,denseLayers):
+        if self.sampleMethod == 'grid':
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.grid_sampling(self.trainQuantity, *denseLayers[i])
+        elif self.sampleMethod == 'LHS':
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *denseLayers[i])
+        elif self.sampleMethod == 'random':
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.random_sampling(self.trainQuantity, *denseLayers[i])
 
-    # Generate random hyperparameters for CNN models
-    conv_n1 = Sampling.sobol_sampling(trains, 16., 32.)
-    conv_f1 = Sampling.sobol_sampling(trains, 1., 3.)
-    conv_n2 = Sampling.sobol_sampling(trains, 16., 32.)
-    conv_f2 = Sampling.sobol_sampling(trains, 1., 3.)
-    L1 = Sampling.sobol_sampling(trains, 32., 64.)
-    L2 = Sampling.sobol_sampling(trains, 16., 32.)
-    optimizer_number = Sampling.sobol_sampling(trains, 1., 9.)
-    l_rate = Sampling.sobol_sampling(trains, 0.0001, 0.01, round=False)
-    bt_size = Sampling.sobol_sampling(trains, 32., 128.)
-
-    #print(len(optimizer_number))
-    #break
-    for training in range(0, trains2, 1):
-        print("Training:", training + 1)
-        optimizer, name = randomize_optimizer(optimizer_number[training], l_rate[training])
+        return self.optimizer,self.learningRate,self.batchSize,denseLayers
     
-        with open(csvName, 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([name, conv_n1[training], conv_f1[training], conv_n2[training], conv_f2[training], L1[training], L2[training], l_rate[training], bt_size[training]])
-            file.close()
+    def generateCNN(self,convolutedLayers,denseLayers,filterLayers, maxPoolingLayers):
+        if self.sampleMethod == 'grid':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.grid_sampling(self.trainQuantity, *convolutedLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.grid_sampling(self.trainQuantity, *denseLayers[i])
+            for i in range(0,len(filterLayers)):
+                filterLayers[i] = Sampling.grid_sampling(self.trainQuantity, *filterLayers[i])
+                maxPoolingLayers[i] = Sampling.grid_sampling(self.trainQuantity, *maxPoolingLayers[i])
+        elif self.sampleMethod == 'LHS':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *convolutedLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *denseLayers[i])
+            for i in range(0,len(filterLayers)):
+                filterLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *filterLayers[i])
+                maxPoolingLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *maxPoolingLayers[i])
+        elif self.sampleMethod == 'random':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.random_sampling(self.trainQuantity, *convolutedLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.random_sampling(self.trainQuantity, *denseLayers[i])
+            for i in range(0,len(filterLayers)):
+                filterLayers[i] = Sampling.random_sampling(self.trainQuantity, *filterLayers[i])
+                maxPoolingLayers[i] = Sampling.random_sampling(self.trainQuantity, *maxPoolingLayers[i])
+        return self.optimizer,self.learningRate,self.batchSize,convolutedLayers,denseLayers,filterLayers,maxPoolingLayers
+    
+    def generateVGG16(self,convolutedLayers,denseLayers,filterLayers, maxPoolingLayers):
+        if self.sampleMethod == 'grid':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.grid_sampling(self.trainQuantity, *convolutedLayers[i])
+                filterLayers[i] = Sampling.grid_sampling(self.trainQuantity, *filterLayers[i])
+            for i in range(0,len(maxPoolingLayers)):
+                maxPoolingLayers[i] = Sampling.grid_sampling(self.trainQuantity, *maxPoolingLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.grid_sampling(self.trainQuantity, *denseLayers[i])
+        elif self.sampleMethod == 'LHS':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *convolutedLayers[i])
+                filterLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *filterLayers[i])
+            for i in range(0,len(maxPoolingLayers)):
+                maxPoolingLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *maxPoolingLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.lhs_sampling(self.trainQuantity, *denseLayers[i])
+        elif self.sampleMethod == 'random':
+            for i in range(0,len(convolutedLayers)):
+                convolutedLayers[i] = Sampling.random_sampling(self.trainQuantity, *convolutedLayers[i])
+                filterLayers[i] = Sampling.random_sampling(self.trainQuantity, *filterLayers[i])
+            for i in range(0,len(maxPoolingLayers)):
+                maxPoolingLayers[i] = Sampling.random_sampling(self.trainQuantity, *maxPoolingLayers[i])
+            for i in range(0,len(denseLayers)):
+                denseLayers[i] = Sampling.random_sampling(self.trainQuantity, *denseLayers[i])
+        return self.optimizer,self.learningRate,self.batchSize,convolutedLayers,denseLayers,filterLayers,maxPoolingLayers

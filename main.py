@@ -1,19 +1,17 @@
 import dataTreatment
-import gaussianRegression
+import GaussianRegression
 import pandas as pd
-import surrogateFunction
-import particleSwarmOptimization
+#import ParticleSwarmOptimization
 import numpy as np
 import os
 import csv
+import DDE as DDE
 
-#best_position = []
-#best_value []
 
-num_particles = 100
+IndividualsNumber = 100
 samplingMethod = 'LHS'
 samplesNumber = 20
-trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO_'+str(num_particles)+'particles.csv'
+trainingFile = 'trainings/CNN_'+ samplingMethod+'/GRPSO_'+str(IndividualsNumber)+'particles.csv'
 
 if not os.path.exists(trainingFile):
     with open(trainingFile, 'w', newline='') as file:
@@ -32,18 +30,26 @@ for training in range(1, samplesNumber+1):
     half_data,other_half_data = dataTreatment.divide_samplings(clean_data)
     loss_data,data_only,smallest_loss_local = dataTreatment.data_from_loss(half_data)
 
-    #Gaussian Process and Acquisition Function
-    print('Gaussian Regression Interpolation')
-    surrogate_values = gaussianRegression.gaussianProcess(data_only,loss_data,other_half_data,smallest_loss_local)
+    particles_position = other_half_data[:,:-1]
 
-    fitness_values = surrogate_values[:num_particles]
-    particles_position = other_half_data[:num_particles,:-1]
+    print("Discrete Differential Evolution Optimization:")
 
-    print(particles_position)
+    dde = DDE.DiscreteDifferentialEvolution(X=data_only,
+                                            y=loss_data,
+                                            population_size=len(particles_position),
+                                            population=particles_position,
+                                            dimension=9,
+                                            bounds=(0, 1000),
+                                            discrete_mask=np.array([True, False, False, False, False, False, False, False, False]),
+                                            max_generations=1000)
+
+
+    best_solution, best_fitness = dde.optimize()
+    print("Best solution:", best_solution)
+    print("Best fitness:", best_fitness)
+
     break
 
-
-    print("Surrogate Values acquired")
     #print(fitness_values)
     # Example usage
     max_iterations = 50
@@ -62,7 +68,7 @@ for training in range(1, samplesNumber+1):
     print("Best Position without treatment:", best_position)
     print("Best Value:", best_value)
 
-    break
+    
 
     with open(trainingFile, 'a', newline='') as file:
                 writer = csv.writer(file)
